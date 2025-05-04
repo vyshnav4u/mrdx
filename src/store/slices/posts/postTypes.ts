@@ -1,9 +1,12 @@
 export type TPost = {
-	id: string;
+	id: number;
 	title: string;
 	body: string;
+	userId: number;
 };
 
 export type TPosts = {
 	posts: TPost[];
+	loading: boolean;
+	error: string | null;
 };
