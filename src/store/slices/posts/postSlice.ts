@@ -1,29 +1,13 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { TPost, TPosts } from './postTypes';
+import { fetchPosts } from './postActions';
 
 const initialState: TPosts = {
 	posts: [],
 	loading: false,
 	error: null,
 };
-
-export const fetchPosts = createAsyncThunk<TPost[]>(
-	'posts/fetchPosts',
-	async (_, thunkAPI) => {
-		try {
-			const POST_URI = 'https://jsonplaceholder.typicode.com/posts';
-			const res = await fetch(POST_URI);
-			const data = (await res.json()) as TPost[];
-
-			return data;
-		} catch (err) {
-			return thunkAPI.rejectWithValue(
-				err instanceof Error ? err.message : 'Failed to fetch posts'
-			);
-		}
-	}
-);
 
 const postSlice = createSlice({
 	name: 'posts',
@@ -32,6 +16,22 @@ const postSlice = createSlice({
 		addPost: (state, action: PayloadAction<TPost>) => {
 			state.posts.push(action.payload);
 		},
+	},
+	extraReducers: (builder) => {
+		builder
+			.addCase(fetchPosts.pending, (state) => {
+				state.loading = true;
+			})
+			.addCase(fetchPosts.fulfilled, (state, action) => {
+				console.log('action', action);
+
+				state.loading = false;
+				state.posts = action.payload;
+			})
+			.addCase(fetchPosts.rejected, (state, action) => {
+				state.loading = false;
+				state.error = action.error.message || 'Something went wrong';
+			});
 	},
 });
 
