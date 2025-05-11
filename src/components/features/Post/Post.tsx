@@ -3,7 +3,7 @@ import AddPost from './AddPost';
 import PostList from './PostList';
 
 const Post = () => {
-	const [showAddPost, setShowAddPost] = useState(false);
+	const [showAddPost, setShowAddPost] = useState(true);
 
 	return (
 		<div>

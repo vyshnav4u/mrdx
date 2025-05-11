@@ -1,8 +1,9 @@
 import { useInitPosts, usePost } from '../../../store/slices';
+import PostPagination from './PostPagination';
 
 const PostList = () => {
 	useInitPosts();
-	const { posts, loading, error } = usePost();
+	const { posts, loading, error, totalNumberOfPosts } = usePost();
 	//todo: check what is bets way to display loading and error / in wrapper
 	if (loading) return 'Loading...';
 
@@ -11,11 +12,17 @@ const PostList = () => {
 	return (
 		<div>
 			<h2> Post Lists </h2>
-			{posts.map((post) => (
-				<article key={post.id}>
-					<h3> {post.title} </h3>
-				</article>
-			))}
+			<div>
+				<p> Total Posts: {totalNumberOfPosts} </p>
+			</div>
+			<ol>
+				{posts.map((post) => (
+					<li key={post.id}>
+						<h4> {post.title} </h4>
+					</li>
+				))}
+			</ol>
+			<PostPagination />
 		</div>
 	);
 };

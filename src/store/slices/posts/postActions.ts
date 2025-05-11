@@ -1,16 +1,22 @@
 import { useDispatch } from 'react-redux';
-import { TDispatch } from '../../store';
+import { TDispatch, TRootState } from '../../store';
 import { useEffect } from 'react';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { TPost } from './postTypes';
+import { TPostResponse } from './postTypes';
 
-export const fetchPosts = createAsyncThunk<TPost[]>(
+const POST_URI = 'https://dummyjson.com/posts';
+
+export const fetchPosts = createAsyncThunk<TPostResponse>(
 	'posts/fetchPosts',
 	async (_, thunkAPI) => {
 		try {
-			const POST_URI = 'https://jsonplaceholder.typicode.com/posts';
-			const res = await fetch(POST_URI);
-			const data = (await res.json()) as TPost[];
+			const { posts } = thunkAPI.getState() as TRootState;
+			const { currentPage, numOfItemInPage } = posts;
+			const skip = numOfItemInPage * currentPage;
+			const url = `${POST_URI}/?limit=${numOfItemInPage}&skip=${skip}`;
+			const res = await fetch(url);
+			const data = (await res.json()) as TPostResponse;
+			console.log('data', data);
 
 			return data;
 		} catch (err) {

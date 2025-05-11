@@ -8,8 +8,8 @@ const generatePostId = () => {
 };
 
 const AddPost = () => {
-	const [title, setTitle] = useState('');
-	const [body, setBody] = useState('');
+	const [title, setTitle] = useState('Sample title');
+	const [body, setBody] = useState('Sample body');
 
 	const dispatch = useDispatch();
 	const onCreate = () => {

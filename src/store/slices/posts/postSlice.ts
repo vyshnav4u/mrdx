@@ -7,6 +7,9 @@ const initialState: TPosts = {
 	posts: [],
 	loading: false,
 	error: null,
+	currentPage: 1,
+	numOfItemInPage: 12,
+	totalNumberOfPosts: 1,
 };
 
 const postSlice = createSlice({
@@ -23,10 +26,15 @@ const postSlice = createSlice({
 				state.loading = true;
 			})
 			.addCase(fetchPosts.fulfilled, (state, action) => {
+				state.loading = false;
 				console.log('action', action);
 
-				state.loading = false;
-				state.posts = action.payload;
+				const { posts, total } = action.payload;
+				state.posts = posts;
+				if (total !== state.totalNumberOfPosts) {
+					//todo: check if number update each time re-render helps
+					state.totalNumberOfPosts = total;
+				}
 			})
 			.addCase(fetchPosts.rejected, (state, action) => {
 				state.loading = false;
