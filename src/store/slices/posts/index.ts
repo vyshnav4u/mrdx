@@ -1,3 +1,4 @@
 export * from './postSlice';
-export * from './postSelector';
+export * from './postSelectors';
+export * from './postActions';
 export * from './postTypes';

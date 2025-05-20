@@ -1,5 +1,11 @@
+import Post from "./components/features/Post/Post";
+
 function App() {
-  return <div data-testid="demo"> Hi </div>;
+  return (
+    <div>
+      <Post />
+    </div>
+  );
 }
 
 export default App;
