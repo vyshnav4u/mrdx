@@ -1,10 +1,7 @@
-import { useDispatch } from 'react-redux';
-import { TDispatch, TRootState } from '../../store';
-import { useEffect } from 'react';
+import { TRootState } from '../../store';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { TPostResponse } from './postTypes';
-
-const POST_URI = 'https://dummyjson.com/posts';
+import { POST_URI } from './postConstants';
 
 export const fetchPosts = createAsyncThunk<TPostResponse>(
 	'posts/fetchPosts',
@@ -16,8 +13,6 @@ export const fetchPosts = createAsyncThunk<TPostResponse>(
 			const url = `${POST_URI}/?limit=${numOfItemInPage}&skip=${skip}`;
 			const res = await fetch(url);
 			const data = (await res.json()) as TPostResponse;
-			console.log('data', data);
-
 			return data;
 		} catch (err) {
 			return thunkAPI.rejectWithValue(
@@ -26,11 +21,3 @@ export const fetchPosts = createAsyncThunk<TPostResponse>(
 		}
 	}
 );
-
-export const useInitPosts = () => {
-	const dispatch = useDispatch<TDispatch>();
-
-	useEffect(() => {
-		dispatch(fetchPosts());
-	}, [dispatch]);
-};

@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { TPost, TPosts } from './postTypes';
-import { fetchPosts } from './postActions';
+import { fetchPosts } from './postThunks';
 
 const initialState: TPosts = {
 	posts: [],
@@ -27,8 +27,6 @@ const postSlice = createSlice({
 			})
 			.addCase(fetchPosts.fulfilled, (state, action) => {
 				state.loading = false;
-				console.log('action', action);
-
 				const { posts, total } = action.payload;
 				state.posts = posts;
 				if (total !== state.totalNumberOfPosts) {
