@@ -1,14 +1,17 @@
-import { usePost } from '../../../store/slices/posts';
+import { useAppSelector } from '../../../store/hook';
+import { selectPost } from '../../../store/slices/posts';
 import { useInitPosts } from '../../../store/slices/posts/postHooks';
 import PostPagination from './PostPagination';
 
 const PostList = () => {
   useInitPosts();
-  const { posts, loading, error, totalNumberOfPosts } = usePost();
+  const { posts, loading, error, totalNumberOfPosts } = useAppSelector(selectPost);
   //todo: check what is bets way to display loading and error / in wrapper
   if (loading) return 'Loading...';
 
   if (error) return 'Error';
+
+  console.log('posts', posts);
 
   return (
     <div>

@@ -1,6 +1,6 @@
-import { useDispatch } from 'react-redux';
 import { useState } from 'react';
-import { addPost } from '../../../store/slices/posts';
+import { addPost, selectMostViewedPosts } from '../../../store/slices/posts';
+import { useAppDispatch, useAppSelector } from '../../../store/hook';
 
 const generatePostId = () => {
   const timeStamp = new Date().getTime();
@@ -10,15 +10,17 @@ const generatePostId = () => {
 const AddPost = () => {
   const [title, setTitle] = useState('Sample title');
   const [body, setBody] = useState('Sample body...');
+  const posts = useAppSelector(selectMostViewedPosts);
+  console.log('AddPost renderd', posts);
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const onCreate = () => {
     //todo: create a banner informing user need fill mandatory fields
     if (!title || !body) {
       return;
     }
 
-    dispatch(addPost({ id: generatePostId(), title, body, userId: 1 }));
+    dispatch(addPost({ id: generatePostId(), title, body, userId: 1, views: 0 }));
     setTitle('');
     setBody('');
     //todo: add notification new post is added
